@@ -1,0 +1,5 @@
+pdfminer.six
+pymupdf 
+easyocr
+numpy
+dotenv
