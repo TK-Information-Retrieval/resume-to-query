@@ -34,7 +34,8 @@ class LLMModel:
         try:
             return response.json()[0]["generated_text"]
         except:
-            print("Failed to parse JSON.")
+            print("Failed to parse JSON. Error:", response.text)
+            print("Response status code:", response.status_code)
             return None
 
 if __name__ == "__main__":

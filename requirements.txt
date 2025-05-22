@@ -3,3 +3,7 @@ pymupdf
 easyocr
 numpy
 dotenv
+fastapi
+uvicorn[standard]
+python-multipart
+requests
