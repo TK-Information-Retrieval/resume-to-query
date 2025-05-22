@@ -1,26 +1,15 @@
 # Use Python 3.9 slim image as base
-FROM python:3.9-slim
+FROM python:3.9
 
 # Set working directory
 WORKDIR /app
 
 # Install system dependencies required for the libraries
-RUN apt-get update && apt-get install -y \
-    libgl1-mesa-glx \
-    libglib2.0-0 \
-    libsm6 \
-    libxext6 \
-    libxrender-dev \
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
     libgomp1 \
     libfontconfig1 \
     libfreetype6 \
-    libxft2 \
-    libgdkpixbuf2.0-0 \
-    libgtk-3-0 \
-    libpango-1.0-0 \
-    libcairo2 \
-    libatk1.0-0 \
-    curl \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements first for better Docker layer caching
