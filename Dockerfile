@@ -12,11 +12,15 @@ RUN apt-get update && apt-get install -y \
     libxext6 \
     libxrender-dev \
     libgomp1 \
-    libgthread-2.0-0 \
     libfontconfig1 \
     libfreetype6 \
     libxft2 \
-    wget \
+    libgdkpixbuf2.0-0 \
+    libgtk-3-0 \
+    libpango-1.0-0 \
+    libcairo2 \
+    libatk1.0-0 \
+    curl \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements first for better Docker layer caching
