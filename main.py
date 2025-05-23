@@ -1,6 +1,5 @@
 from summarize import LLMModel
-from pdf2text import extract_v1, extract_v2
-from utils import clean_resume_text, clean_ocr_resume_text
+from pdf2text import extract_v1
 
 QUERY_TEMPLATE = """
 Analyze the following resume and extract key details in the Skills.
@@ -14,7 +13,7 @@ Resume:
 def pipeline(path):
     resume_text = None
     try:
-        resume_text = extract_v2(path)
+        resume_text = extract_v1(path)
     except Exception as e:
         print(f"Error extracting resume: {e}")
         return None
