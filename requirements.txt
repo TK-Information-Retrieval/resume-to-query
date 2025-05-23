@@ -1,6 +1,4 @@
 pdfminer.six
-pymupdf 
-easyocr
 numpy
 dotenv
 fastapi
