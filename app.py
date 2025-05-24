@@ -6,6 +6,7 @@ import requests
 from typing import Dict, Any
 import logging
 import uvicorn
+from dotenv import load_dotenv
 
 # Import your existing modules
 from summarize import LLMModel
@@ -14,6 +15,10 @@ from pdf2text import extract_v1
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+# Load the token from .env
+load_dotenv()
+job_search_api = os.getenv("JOB_SEARCH_API")
 
 app = FastAPI(
     title="Resume Processing API",
@@ -27,9 +32,6 @@ Please summarize the following resume into a concise search query that captures 
 Resume:
 {resume}
 """
-
-# External API endpoint
-EXTERNAL_API_URL = "https://iqbal.com/retrieve"
 
 # ========================= FUNCTIONS =========================
 async def process_resume_pipeline(file_path: str) -> str:
@@ -63,31 +65,35 @@ async def call_search_engine_api(summary: str) -> Dict[Any, Any]:
     Call the external API with the summary
     """
     try:
-        payload = {"summary": summary}
-        
-        response = requests.post(
-            EXTERNAL_API_URL, 
-            json=payload,
-            headers={"Content-Type": "application/json"},
-            timeout=30  # 30 second timeout
+        # Set up query parameters for the GET request
+        params = {
+            "query": summary,
+            "num_results": 10
+        }
+
+        response = requests.get(
+            job_search_api,
+            params=params,
+            headers={"Accept": "application/json"},
+            timeout=300
         )
-        
-        response.raise_for_status()  # Raises an HTTPException for bad responses
-        
+
+        response.raise_for_status()  # Raises an HTTPError for bad responses
+
         return response.json()
         
     except requests.exceptions.Timeout:
-        logger.error("Timeout calling external API")
-        raise HTTPException(status_code=504, detail="External API timeout")
+        logger.error("Timeout calling search job API")
+        raise HTTPException(status_code=504, detail="search job API timeout")
     except requests.exceptions.ConnectionError:
-        logger.error("Connection error calling external API")
-        raise HTTPException(status_code=503, detail="External API connection error")
+        logger.error("Connection error calling search job API")
+        raise HTTPException(status_code=503, detail="search job API connection error")
     except requests.exceptions.HTTPError as e:
-        logger.error(f"HTTP error calling external API: {e}")
-        raise HTTPException(status_code=e.response.status_code, detail=f"External API error: {e}")
+        logger.error(f"HTTP error calling search job API: {e}")
+        raise HTTPException(status_code=e.response.status_code, detail=f"search job API error: {e}")
     except Exception as e:
-        logger.error(f"Unexpected error calling external API: {str(e)}")
-        raise HTTPException(status_code=500, detail="Unexpected error calling external API")
+        logger.error(f"Unexpected error calling search job API: {str(e)}")
+        raise HTTPException(status_code=500, detail="Unexpected error calling search job API")
 
 
 # ========================= API ENDPOINTS =========================
