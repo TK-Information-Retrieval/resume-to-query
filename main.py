@@ -2,9 +2,7 @@ from summarize import LLMModel
 from pdf2text import extract_v1
 
 QUERY_TEMPLATE = """
-Analyze the following resume and extract key details in the Skills.
-
-Then, based on the extracted information, generate a concise and effective search engine query that summarizes the candidate`s professional profile and expertise in ONE SENTENCE ONLY.
+Please summarize the following resume into a concise search query that captures the candidate's key skills, experience, and job roles.
 
 Resume:
 {resume}
@@ -22,12 +20,8 @@ def pipeline(path):
     prompt = QUERY_TEMPLATE.format(resume=resume_text)
     
     try:
-        initial_response = llm.generate_response(prompt)
-        clean_response = initial_response.split("</think>")[-1].strip()
-
-        final_prompt = f"summarize into one sentence: {clean_response}"
-        final_response = llm.generate_response(final_prompt)
-        return final_response.split("</think>")[-1].strip()
+        response = llm.generate_response(prompt)
+        return response
     except Exception as e:
         print(f"Error during LLM processing: {e}")
         return None
