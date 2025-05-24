@@ -7,9 +7,6 @@ WORKDIR /app
 # Install system dependencies required for the libraries
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
-    libgomp1 \
-    libfontconfig1 \
-    libfreetype6 \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements first for better Docker layer caching
