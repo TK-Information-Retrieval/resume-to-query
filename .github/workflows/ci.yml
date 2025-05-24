@@ -132,7 +132,7 @@ jobs:
               --memory="2g" \
               --cpus="1.0" \
               -e HF_TOKEN="${{ secrets.HF_TOKEN }}" \
-              -e EXTERNAL_API_URL="${{ secrets.EXTERNAL_API_URL }}" \
+              -e JOB_SEARCH_API="${{ secrets.JOB_SEARCH_API }}" \
               -e LOG_LEVEL="${{ vars.LOG_LEVEL || 'INFO' }}" \
               --health-cmd="curl -f http://localhost:8000/health || exit 1" \
               --health-interval=30s \
